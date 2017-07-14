@@ -1,14 +1,21 @@
 package com.example.totoroto.homework2;
 
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,20 +30,24 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<ItemData> arrItems;
     ImageView ivLayoutChange;
     boolean isLinear;
-
+    private DrawerLayout mDrawerLayout;
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tabLayout = (TabLayout)findViewById(R.id.tabLayout);
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
-        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
-        ivLayoutChange = (ImageView) findViewById(R.id.iv_layoutChange);
+        init();
 
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_3bar_grey);
+        actionBar.setDisplayHomeAsUpEnabled(true); //햄버거 아이콘이 클릭되게만 해줌
+                                                //onOptionsItemSelected 을 구현해줘야..
         aboutTab();
         aboutData();
         aboutLayoutChange();
+        aboutNavigation();
 
         StaggeredGridLayoutManager stagLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(stagLayoutManager);
@@ -47,8 +58,48 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(myAdapter);
     }
 
+    private void aboutNavigation() {
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) { //네비게이션 아이템에 대한
+                item.setChecked(true);
+                mDrawerLayout.closeDrawers();
+
+                switch (item.getItemId()) {
+                    case R.id.tab_destination:
+                        Toast.makeText(getApplicationContext(), "거리순", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.tab_popular:
+                        Toast.makeText(getApplicationContext(), "인기순", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.tab_recent:
+                        Toast.makeText(getApplicationContext(), "최근순", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == android.R.id.home){ //햄버거 아이콘을 클릭했을 때
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    private void init() {
+        tabLayout = (TabLayout)findViewById(R.id.tabLayout);
+        recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        ivLayoutChange = (ImageView) findViewById(R.id.iv_layoutChange);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+    }
+
     private void aboutLayoutChange() {
-        isLinear = false;
+        isLinear = false; //초기 화면이 Staggered 이므로 Linear가 아님
         ivLayoutChange.setOnClickListener(new View.OnClickListener() {
 
             @Override
