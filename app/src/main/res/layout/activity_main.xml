@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.totoroto.homework2.MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_3bar_grey"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="맛집 리스트"
+            android:textSize="20dp"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:layout_marginLeft="40dp"
+            />
+    </android.support.v7.widget.Toolbar>
+
+        <android.support.design.widget.TabLayout
+            android:layout_width="330dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tabLayout"
+            android:layout_below="@+id/toolbar"
+            app:tabTextColor="#000000"
+            app:tabSelectedTextColor="#008000"
+            >
+        </android.support.design.widget.TabLayout>
+
+        <ImageView
+            android:id="@+id/iv_layoutChange"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:srcCompat="@drawable/ic_linear"
+            android:layout_toRightOf="@id/tabLayout"
+            android:layout_below="@+id/toolbar"
+            />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerView"
+            android:layout_below="@+id/tabLayout"
+            >
+        </android.support.v7.widget.RecyclerView>
+
+
+</RelativeLayout>
