@@ -1,6 +1,10 @@
 package com.example.totoroto.homework2;
 
+
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +13,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     private ArrayList<ItemData> mDatas;
+    Context context;
     ItemData itemData;
 
     public void setItemDatas(ArrayList<ItemData> itemDatas){
@@ -33,15 +40,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         itemData = mDatas.get(position);
-
-        holder.storeImage.setImageResource(itemData.storeImage);
+        holder.storeImage.setImageBitmap(itemData.getBitmap());
         holder.storeName.setText(itemData.storeName);
         holder.storeDetail.setText(itemData.storeDetail);
-
-        if(itemData.getCheck())
-            holder.btn_check.setBackgroundResource(R.drawable.ic_checked);
-        else
-            holder.btn_check.setBackgroundResource(R.drawable.ic_unchecked);
     }
 
     @Override
@@ -66,19 +67,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
             btn_check.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ItemData itemData = mDatas.get(getAdapterPosition()); //아이템 위치가 자꾸바뀌니까
 
-                    if(itemData.getCheck()) {
-                        itemData.isCheck = false;
-                        btn_check.setBackgroundResource(R.drawable.ic_unchecked);
-                    }
-                    else {
-                        itemData.isCheck = true;
-                        btn_check.setBackgroundResource(R.drawable.ic_checked);
-                    }
+                    Intent intent = new Intent(context, MapActivity.class);
+                    /* putExtra의 첫 값은 식별 태그, 뒤에는 다음 화면에 넘길 값 */
+                    intent.putExtra("storeName", itemData.getStoreName());
+                    intent.putExtra("lat", itemData.getLat());
+                    intent.putExtra("lon", itemData.getLon());
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             });
         }
+    }
 
+    public void setContext(Context context){
+        this.context = context;
     }
 }
+
