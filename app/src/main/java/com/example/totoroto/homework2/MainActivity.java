@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isLinear;
     private DrawerLayout mDrawerLayout;
     NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == android.R.id.home){ //햄버거 아이콘을 클릭했을 때
-                mDrawerLayout.openDrawer(GravityCompat.START);
-                return true;
+            mDrawerLayout.openDrawer(GravityCompat.START);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -182,6 +183,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
